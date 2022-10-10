@@ -16,6 +16,10 @@ public interface QuizService {
 	
 	List<Quiz> getAllQuizs();
 	
+	List<Quiz> getActiveQuiz();
+
+	List<Quiz> getActiveQuizbyCategoryId(Integer cid);
+	
 	
 
 }

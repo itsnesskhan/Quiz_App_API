@@ -36,7 +36,7 @@ public class Categories {
 	
 	private String name;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "category")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
 	@JsonIgnore
 	private Set<Quiz> quizs = new LinkedHashSet<Quiz>();
 

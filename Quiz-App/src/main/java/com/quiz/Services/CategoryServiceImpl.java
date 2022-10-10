@@ -21,8 +21,9 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public Categories getCategoryByName(String catName) {
-		return this.categoryRepository.findByName(catName);
+	public Categories getCategoryById(Integer cid) {
+		return this.categoryRepository.findById(cid).orElseThrow(
+				()->new ResourceNotFoundException("category","", cid));
 	}
 
 	@Override

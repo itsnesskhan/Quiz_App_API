@@ -7,8 +7,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
-import org.springframework.security.core.GrantedAuthority;
+import javax.persistence.Embedded;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.quiz.Models.Name;
 import com.quiz.Models.UserRole;
 
@@ -21,10 +25,22 @@ import lombok.NoArgsConstructor;
 public class UserDto {
 	
 	private Integer id;
-
+	@Embedded
 	private Name name;
+	
 	private String email;
+
 	private String password;
+	
+	private String profile;
+	
+	private Set<UserRole> roles;
+	
+	private String profileUrl;
+	
+	
+	
+	
 
 }
 

@@ -8,7 +8,7 @@ public interface CategoryService {
 	
 	Categories addCategory(Categories category);
 	
-	Categories getCategoryByName(String catId);
+	Categories getCategoryById(Integer catId);
 	
 	Categories updateCategory(Categories category, Integer catId);
 	

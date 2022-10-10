@@ -17,10 +17,10 @@ import lombok.ToString;
 @Embeddable
 public class Name {
 
-	@Column(name = "first_name")
+	@Column(name = "first_name",nullable = false)
 	private String fname;
 
-	@Column(name = "last_name")
+	@Column(name = "last_name",nullable = false)
 	private String lname;
 
 }

@@ -9,8 +9,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quiz.Exceptions.ResourceNotFoundException;
 import com.quiz.Exceptions.UserAlreadyExistException;
+import com.quiz.Models.Name;
 import com.quiz.Models.User;
 import com.quiz.Models.UserRole;
 import com.quiz.Repository.StudentRepository;
@@ -40,13 +46,25 @@ public class StudentServiceImpl implements StudentServices {
 	@Autowired
 	private UserRolesRepository userRolesRepository;
 
+	@Override
+	public UserDto getJson(String user) {
+		UserDto userJson = new UserDto();
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+			userJson = mapper.readValue(user, UserDto.class);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return userJson;
+	}
 
 	@Override
-	public User createStudent(UserDto studentDto) {
+	public UserDto createStudent(UserDto studentDto) {
 		User student = this.dtoToStudent(studentDto);
 		User user = studentRepository.findByEmail(studentDto.getEmail());
 		if (user !=null) {
-			new UserAlreadyExistException(studentDto.getEmail());
+			throw  new UserAlreadyExistException(studentDto.getEmail());
 		}
 		HashSet<UserRole> set = new HashSet<>();
 		UserRole userRole = new UserRole(1001, "STUDENT");
@@ -57,17 +75,21 @@ public class StudentServiceImpl implements StudentServices {
 		student.setActive(true);
 		student.setPassword(passwordEncoder.bCryptPasswordEncoder().encode(studentDto.getPassword()));
 		user = studentRepository.save(student);	
-		return user;
+		return this.studentToDto(user);
 	}
 
 	@Override
-	public User updateStudent(UserDto studentDto, Integer studentid) {
+	public UserDto updateStudent(UserDto studentDto, Integer studentid) {
 		User student = this.studentRepository.findById(studentid)
 				.orElseThrow(() -> new ResourceNotFoundException(sourceName, fieldName, studentid));
 		student.setName(studentDto.getName());
 		student.setEmail(studentDto.getEmail());
+		if (studentDto.getProfile()!=null) {
+			student.setProfile(studentDto.getProfile());			
+			student.setProfileUrl(studentDto.getProfileUrl());
+		}
 		User user = this.studentRepository.save(student);
-		return user;
+		return this.studentToDto(user);
 	}
 
 	@Override
@@ -86,10 +108,10 @@ public class StudentServiceImpl implements StudentServices {
 	}
 
 	@Override
-	public User getStudentById(Integer studentid) {
+	public UserDto getStudentById(Integer studentid) {
 		User user = this.studentRepository.findById(studentid)
 				.orElseThrow(() -> new ResourceNotFoundException(sourceName, fieldName, studentid));
-		return user;
+		return this.studentToDto(user);
 	}
 
 	private User dtoToStudent(UserDto userDto) {

@@ -1,5 +1,6 @@
 package com.quiz.ExceptionHandler;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,7 +22,7 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ApiResponse>(apiResponse, HttpStatus.NOT_FOUND);
 	}
 	
-	@ExceptionHandler(UserAlreadyExistException.class)
+	@ExceptionHandler({UserAlreadyExistException.class,ConstraintViolationException.class})
 	public ResponseEntity<ApiResponse> userAlreadyExistExceptionHandler(UserAlreadyExistException exception){
 		ApiResponse apiResponse = new ApiResponse(exception.getMessage(), false);
 		return new ResponseEntity<ApiResponse>(apiResponse, HttpStatus.NOT_ACCEPTABLE);

@@ -35,11 +35,15 @@ public class Quiz {
 	
 	private String numOfQuestion;
 	
-	private boolean isActive;	
+	private boolean active;	
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "cid")
 	private Categories category;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "quiz")
+	@JsonIgnore
+	private Set<Quiz_Result> quiz_Results;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "quiz")
 	@JsonIgnore

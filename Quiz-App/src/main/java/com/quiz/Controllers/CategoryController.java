@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import com.quiz.helper.ApiResponse;
 
 @RestController
 @RequestMapping("/categories")
+@CrossOrigin("*")
 public class CategoryController {
 	
 	@Autowired
@@ -31,9 +33,9 @@ public class CategoryController {
 		return new ResponseEntity<List<Categories>>(allCategories, HttpStatus.OK);
 	}
 	
-	@GetMapping("/{catName}")
-	public ResponseEntity<Categories> getCatogory(@PathVariable("catName") String catName){
-		Categories Category = this.categoryService.getCategoryByName(catName);
+	@GetMapping("/{cid}")
+	public ResponseEntity<Categories> getCatogory(@PathVariable("cid") Integer cid){
+		Categories Category = this.categoryService.getCategoryById(cid);
 		return new ResponseEntity<Categories>(Category, HttpStatus.OK);
 	}
 	
@@ -50,7 +52,7 @@ public class CategoryController {
 	}
 	
 	@DeleteMapping("/{catId}")
-	public ResponseEntity<ApiResponse> addCategory(@PathVariable("catId") Integer catId){
+	public ResponseEntity<ApiResponse> deleteCategory(@PathVariable("catId") Integer catId){
 		this.categoryService.deleteCategory(catId);
 		return new ResponseEntity<ApiResponse>(new ApiResponse("Category Deleted Successfully", true), HttpStatus.OK);
 	}

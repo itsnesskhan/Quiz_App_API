@@ -28,6 +28,14 @@ public class QuestionServieImpl implements QuestionService {
 	public Question getQuestionById(Integer quesId) {
 		Question question = this.questionRepository.findById(quesId).orElseThrow(
 				()->new ResourceNotFoundException("Question", "id", quesId));
+		int nes = 1005;
+		String valueOf = String.valueOf(nes);
+		char[] charArray = valueOf.toCharArray();
+		int sum = 0;
+		for (char c : charArray) {
+			sum+=(int)c;
+		}
+		System.out.println(sum);
 		return question ;
 	}
 

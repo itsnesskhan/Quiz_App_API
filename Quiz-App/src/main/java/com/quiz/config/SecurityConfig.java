@@ -53,10 +53,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.cors().
 			and()
 			.authorizeHttpRequests()
+			.antMatchers(HttpMethod.GET,"/student/**").permitAll()
 		.antMatchers(HttpMethod.POST,"/student/**").permitAll()
-		.antMatchers(HttpMethod.PUT,"/student/**").hasAuthority("ADMIN")
+		.antMatchers(HttpMethod.PUT,"/student/**").hasAnyAuthority("ADMIN","STUDENT")
 		.antMatchers(HttpMethod.DELETE,"/student/**").hasAuthority("ADMIN")
-		.antMatchers(HttpMethod.GET,"/student/**").hasAnyAuthority("TEACHER","ADMIN")
+//		.antMatchers(HttpMethod.GET,"/student/**").hasAnyAuthority("TEACHER","ADMIN","STUDENT")
 		.antMatchers("index").permitAll()
 		.antMatchers("/login").permitAll()
 		.anyRequest()

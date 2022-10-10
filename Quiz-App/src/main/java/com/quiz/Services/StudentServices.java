@@ -10,15 +10,17 @@ import com.quiz.dtos.UserDto;
 
 public interface StudentServices {
 
-	User createStudent(UserDto student);
+	UserDto createStudent(UserDto student);
 	
-	User updateStudent (UserDto student, Integer studentid);
+	UserDto updateStudent (UserDto student, Integer studentid);
 	
 	void deleteStudent(Integer studentid);
 	
 	List<UserDto> getAllStudents();
 	
-	User getStudentById(Integer studentid);
+	UserDto getStudentById(Integer studentid);
+	
+	UserDto getJson(String user);
 	
 	
 }

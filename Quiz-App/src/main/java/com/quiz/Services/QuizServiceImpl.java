@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.quiz.Exceptions.ResourceNotFoundException;
+import com.quiz.Models.Categories;
 import com.quiz.Models.Question;
 import com.quiz.Models.Quiz;
 import com.quiz.Repository.QuizRepository;
@@ -36,7 +37,9 @@ public class QuizServiceImpl implements QuizService {
 		quiz.setTitle(quizDto.getTitle());
 		quiz.setNumOfQuestion(quizDto.getNumOfQuestion());
 		quiz.setQuestions(quizDto.getQuestions());
+		quiz.setActive(quizDto.isActive());
 		quiz.setMaxMarks(quizDto.getMaxMarks());
+		quiz.setCategory(quizDto.getCategory());
 		Quiz save = this.quizRepository.save(quiz);
 		return save;
 	}
@@ -52,6 +55,19 @@ public class QuizServiceImpl implements QuizService {
 	@Override
 	public List<Quiz> getAllQuizs() {
 		return quizRepository.findAll();
+	}
+
+	@Override
+	public List<Quiz> getActiveQuiz() {
+		return this.quizRepository.findByActive(true);
+		
+	}
+
+	@Override
+	public List<Quiz> getActiveQuizbyCategoryId(Integer cid) {
+		Categories categories = new Categories();
+		categories.setCid(cid);
+		return quizRepository.findByCategoryAndActive(categories, true);
 	}
 
 }

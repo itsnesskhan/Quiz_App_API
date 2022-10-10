@@ -15,11 +15,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import org.aspectj.weaver.tools.Trace;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,9 +49,10 @@ public class User implements UserDetails {
 	@Embedded
 	private Name name;
 	
-	@Column(unique = true)
+	@Column(unique = true, nullable =false)
 	private String email;
-
+	
+	@Column(nullable =  false)
 	private String password;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
@@ -56,6 +62,13 @@ public class User implements UserDetails {
 	private boolean Active;
 
 	private String profile;
+	
+	
+	private String profileUrl;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy ="user")
+	@JsonIgnore
+	private Set<Quiz_Result> quiz_Results;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

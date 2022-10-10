@@ -12,8 +12,6 @@ import com.quiz.Repository.OptionsRepository;
 @SpringBootApplication
 public class QuizAppApplication implements CommandLineRunner{
 	
-	@Autowired
-	private OptionsRepository optionsRepository;
 
 	public static void main(String[] args)  {
 		SpringApplication.run(QuizAppApplication.class, args);
